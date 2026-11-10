@@ -244,6 +244,20 @@ class QuizGame:
         else:
             print("추가한 퀴즈는 현재 실행 중인 게임에만 반영되었습니다.")
 
+    def show_quizzes(self):
+        print("\n=== 퀴즈 목록 ===")
+
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
+
+        print(f"등록된 퀴즈는 총 {len(self.quizzes)}개입니다.")
+
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"\n--- 퀴즈 {number} ---")
+            quiz.display()
+            print(f"정답: {quiz.answer}번")
+
     def run(self):
         print(f"퀴즈 {len(self.quizzes)}개를 준비했습니다.")
 
@@ -257,7 +271,7 @@ class QuizGame:
                 elif choice == 2:
                     self.add_quiz()
                 elif choice == 3:
-                    print("퀴즈 목록을 선택했습니다.")
+                    self.show_quizzes()
                 elif choice == 4:
                     print("최고 점수 확인을 선택했습니다.")
                 elif choice == 5:
