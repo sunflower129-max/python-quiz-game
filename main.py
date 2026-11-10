@@ -222,6 +222,17 @@ class QuizGame:
             f"{score}문제를 맞혔습니다."
         )
 
+        if self.best_score is None or score > self.best_score:
+            self.best_score = score
+            print(f"최고 점수를 기록했습니다! {self.best_score}점")
+        else:
+            print(f"현재 최고 점수는 {self.best_score}점입니다.")
+
+        if self.save_state():
+            print("게임 기록을 state.json에 저장했습니다.")
+        else:
+            print("게임 기록을 파일에 저장하지 못했습니다.")
+
     def add_quiz(self):
         print("\n=== 새 퀴즈 추가 ===")
 
@@ -258,6 +269,16 @@ class QuizGame:
             quiz.display()
             print(f"정답: {quiz.answer}번")
 
+    def show_score(self):
+        print("\n=== 최고 점수 ===")
+
+        if self.best_score is None:
+            print("아직 퀴즈를 끝까지 푼 기록이 없습니다.")
+            return
+
+        print(f"최고 점수: {self.best_score}점")
+        print("점수는 한 게임에서 맞힌 문제 수입니다.")
+
     def run(self):
         print(f"퀴즈 {len(self.quizzes)}개를 준비했습니다.")
 
@@ -273,7 +294,7 @@ class QuizGame:
                 elif choice == 3:
                     self.show_quizzes()
                 elif choice == 4:
-                    print("최고 점수 확인을 선택했습니다.")
+                    self.show_score()
                 elif choice == 5:
                     print("게임을 종료합니다.")
                     break
