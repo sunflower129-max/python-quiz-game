@@ -69,6 +69,49 @@ def create_default_quizzes():
     ]
 
 
+def get_number(prompt, minimum, maximum):
+    while True:
+        user_input = input(prompt).strip()
+
+        if user_input == "":
+            print("입력한 내용이 없습니다. 번호를 입력해주세요.")
+            continue
+
+        try:
+            number = int(user_input)
+        except ValueError:
+            print("숫자로 입력해주세요.")
+            continue
+
+        if number < minimum or number > maximum:
+            print(f"{minimum}부터 {maximum}까지의 번호를 입력해주세요.")
+            continue
+
+        return number
+
+
+def play_quiz(quizzes):
+    if not quizzes:
+        print("등록된 퀴즈가 없습니다.")
+        return
+
+    score = 0
+
+    for number, quiz in enumerate(quizzes, start=1):
+        print(f"\n--- 문제 {number} / {len(quizzes)} ---")
+        quiz.display()
+
+        user_answer = get_number("정답 번호를 입력하세요: ", 1, 4)
+
+        if quiz.check_answer(user_answer):
+            print("정답입니다!")
+            score += 1
+        else:
+            print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
+
+    print(f"\n퀴즈 완료! {len(quizzes)}문제 중 {score}문제를 맞혔습니다.")
+
+
 def show_menu():
     print("\n=== 수학 공식 퀴즈 게임 ===")
     print("1. 퀴즈 풀기")
@@ -85,24 +128,10 @@ def main():
     try:
         while True:
             show_menu()
-            user_input = input("메뉴 번호를 입력하세요: ").strip()
-
-            if user_input == "":
-                print("입력한 내용이 없습니다. 번호를 입력해주세요.")
-                continue
-
-            try:
-                choice = int(user_input)
-            except ValueError:
-                print("숫자로 입력해주세요.")
-                continue
-
-            if choice < 1 or choice > 5:
-                print("1부터 5까지의 번호를 입력해주세요.")
-                continue
+            choice = get_number("메뉴 번호를 입력하세요: ", 1, 5)
 
             if choice == 1:
-                print("퀴즈 풀기를 선택했습니다.")
+                play_quiz(quizzes)
             elif choice == 2:
                 print("퀴즈 추가를 선택했습니다.")
             elif choice == 3:
